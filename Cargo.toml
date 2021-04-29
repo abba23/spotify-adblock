@@ -1,0 +1,23 @@
+[package]
+name = "spotify-adblock"
+version = "1.0.0"
+authors = ["abba23"]
+description = "Adblocker for Spotify"
+edition = "2018"
+
+[dependencies]
+home = "*"
+lazy_static = "*"
+libc = "*"
+serde = { version = "*", features = ["derive"] }
+toml = "*"
+redhook = "*"
+regex = "*"
+
+[lib]
+name = "spotifyadblock"
+crate_type = ["dylib"]
+
+[profile.release]
+lto = true
+panic = "abort"
