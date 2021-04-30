@@ -3,7 +3,6 @@ mod cef_urlrequest_capi;
 use cef_urlrequest_capi::{
     _cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_string_userfree_utf16_free, cef_urlrequest_t,
 };
-use home::home_dir;
 use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, EAI_FAIL};
 use redhook::{hook, real};
@@ -26,7 +25,8 @@ lazy_static! {
     static ref CONFIG: Config = {
         let config_paths = vec![
             PathBuf::from("config.toml"),
-            home_dir().unwrap().join(".config/spotify-adblock/config.toml"),
+            #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
+            std::env::home_dir().unwrap().join(".config/spotify-adblock/config.toml"),
             PathBuf::from("/etc/spotify-adblock/config.toml"),
         ];
 
