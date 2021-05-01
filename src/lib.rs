@@ -1,6 +1,6 @@
-mod cef_urlrequest_capi;
+mod cef;
 
-use cef_urlrequest_capi::{
+use cef::{
     _cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_string_userfree_utf16_free, cef_urlrequest_t,
 };
 use lazy_static::lazy_static;
