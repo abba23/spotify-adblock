@@ -31,6 +31,7 @@ allowlist = [
     'traffic\.libsyn\.com', # podcasts
     'api.*-desktop\.musixmatch\.com', # lyrics (genius-spicetify)
     '.*\.podbean\.com', # podcasts
+    'cdn\.podigee\.com', # podcasts
     'dts\.podtrac\.com', # podcasts
     'www\.podtrac\.com', # podcasts
     'www\.reddit\.com', # Reddit (Spicetify Reddit app)
