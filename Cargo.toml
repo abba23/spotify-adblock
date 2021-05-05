@@ -8,15 +8,15 @@ edition = "2018"
 [dependencies]
 lazy_static = "*"
 libc = "*"
-redhook = "*"
 regex = "*"
 serde = { version = "*", features = ["derive"] }
 toml = "*"
 
 [lib]
 name = "spotifyadblock"
-crate_type = ["dylib"]
+crate_type = ["cdylib"]
 
 [profile.release]
 lto = true
+opt-level = 3
 panic = "abort"
