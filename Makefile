@@ -4,7 +4,7 @@ PROFILE ?= release
 BINARY_PATH = target/$(PROFILE)/libspotifyadblock.so
 CONFIG_PATH = config.toml
 BINARY_TARGET = $(DESTDIR)$(PREFIX)/lib/$(NAME).so
-CONFIG_TARGET = /etc/$(NAME)/config.toml
+CONFIG_TARGET = $(DESTDIR)/etc/$(NAME)/config.toml
 
 .PHONY: all
 all: $(BINARY_PATH)
