@@ -52,7 +52,7 @@ allowlist = [
     'seed-mix-image\.spotifycdn\.com', # mix images
     'download\.ted\.com', # podcasts
     'www\.youtube\.com', # YouTube (Spicetify Reddit app)
-    'i.ytimg.com', # YouTube images (Spicetify Reddit app)
+    'i\.ytimg\.com', # YouTube images (Spicetify Reddit app)
     'dcs.*\.megaphone\.fm', # podcasts
     'traffic\.megaphone\.fm', # podcasts
     'audio-ak-spotify-com\.akamaized\.net', # audio
@@ -63,7 +63,6 @@ allowlist = [
     'audio-sp-.*\.spotifycdn\.net', # audio
     'dovetail\.prxu\.org', # podcasts
     'dovetail-cdn\.prxu\.org', # podcasts
-
 ]
 
 denylist = [
