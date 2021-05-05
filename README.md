@@ -15,6 +15,7 @@ Prerequisites:
 ```bash
 $ git clone https://github.com/abba23/spotify-adblock.git
 $ cd spotify-adblock
+$ sudo chmod ugo+rwx spotify-adblock/
 $ make
 ```
 
