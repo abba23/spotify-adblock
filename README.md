@@ -101,3 +101,16 @@ The allowlist and denylist can be configured in a config file located at (in asc
 * `/etc/spotify-adblock/config.toml` *(default)*
 * `~/.config/spotify-adblock/config.toml` *(default for Flatpak)*
 * `config.toml` in the working directory
+
+
+## Troubleshooting
+If you run into issues with cargo:
+```# cargo build --profile release
+cargo build --release
+make: cargo: Command not found
+make: *** [Makefile:14: target/release/libspotifyadblock.so] Error 127
+```
+Then reinstall rust and run make again:
+```
+sudo apt reinstall rustc -y
+```
