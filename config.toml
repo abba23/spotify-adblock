@@ -23,6 +23,7 @@ allowlist = [
     'content\.production\.cdn\.art19\.com', # podcasts
     'rss\.art19\.com', # podcasts
     '.*\.buzzsprout\.com', # podcasts
+    'chtbl\.com', # podcasts
     'platform-lookaside\.fbsbx\.com', # Facebook profile images
     'genius\.com', # lyrics (genius-spicetify)
     '.*\.googlevideo\.com', # YouTube videos (Spicetify Reddit app)
@@ -56,6 +57,7 @@ allowlist = [
     'i\.ytimg\.com', # YouTube images (Spicetify Reddit app)
     'dcs.*\.megaphone\.fm', # podcasts
     'traffic\.megaphone\.fm', # podcasts
+    'pdst\.fm', # podcasts
     'audio-ak-spotify-com\.akamaized\.net', # audio
     'audio4-ak-spotify-com\.akamaized\.net', # audio
     'heads4-ak-spotify-com\.akamaized\.net', # audio (heads)
