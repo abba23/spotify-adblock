@@ -55,6 +55,7 @@ allowlist = [
     'download\.ted\.com', # podcasts
     'www\.youtube\.com', # YouTube (Spicetify Reddit app)
     'i\.ytimg\.com', # YouTube images (Spicetify Reddit app)
+    'chrt\.fm', # podcasts
     'dcs.*\.megaphone\.fm', # podcasts
     'traffic\.megaphone\.fm', # podcasts
     'pdst\.fm', # podcasts
