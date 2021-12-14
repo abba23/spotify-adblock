@@ -39,7 +39,8 @@ allowlist = [
     'audio\.simplecast\.com', # podcasts
     'media\.simplecast\.com', # podcasts
     'ap\.spotify\.com', # audio (access point)
-    '.*\.ap\.spotify\.com', # resolved access points
+    '.*\.ap\.spotify\.com', # access points
+    'ap-.*\.spotify\.com', # access points
     'api\.spotify\.com', # client APIs
     'api-partner\.spotify\.com', # album/artist pages
     'xpui\.app\.spotify\.com', # user interface
