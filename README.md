@@ -8,6 +8,7 @@ Spotify adblocker for Linux (macOS untested) that works by wrapping `getaddrinfo
 
 ## Build
 Prerequisites:
+* Cargo
 * Git
 * Make
 * Rust
