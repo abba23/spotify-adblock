@@ -6,11 +6,18 @@ CONFIG_PATH = config.toml
 BINARY_TARGET = $(DESTDIR)$(PREFIX)/lib/$(NAME).so
 CONFIG_TARGET = $(DESTDIR)/etc/$(NAME)/config.toml
 
+# Is the prerequisite "cargo" installed?
+PREREQ := $(shell command -v cargo 2> /dev/null)
+
 .PHONY: all
 all: $(BINARY_PATH)
 
 $(BINARY_PATH): src Cargo.toml
 	# cargo build --profile $(PROFILE)
+ifndef PREREQ
+	# Give some useful error message
+	$(error "It appears Rust and/or Cargo is not available please install it")
+endif
 ifeq ($(PROFILE), release)
 	cargo build --release
 else
