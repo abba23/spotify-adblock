@@ -11,6 +11,7 @@ Prerequisites:
 * Git
 * Make
 * Rust
+* [Cargo](https://doc.rust-lang.org/cargo/)
 
 ```bash
 $ git clone https://github.com/abba23/spotify-adblock.git
