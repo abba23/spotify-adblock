@@ -68,6 +68,10 @@ allowlist = [
     'audio-sp-.*\.spotifycdn\.net', # audio
     'dovetail\.prxu\.org', # podcasts
     'dovetail-cdn\.prxu\.org', # podcasts
+    'sphinx\.acast\.com', # podcasts
+    'api\.spreaker\.com', # podcasts
+    'stitcher\.acast\.com', # podcasts
+    'd1dwvcwq657ipv\.cloudfront\.net', # podcasts
 ]
 
 denylist = [
