@@ -20,6 +20,8 @@ allowlist = [
     't\.scdn\.co', # background images
     'thisis-images\.scdn\.co', # 'this is' playlists images
     'video-fa\.scdn\.co', # videos
+    'sphinx\.acast\.com', # podcasts
+    'stitcher\.acast\.com', # podcasts
     'content\.production\.cdn\.art19\.com', # podcasts
     'rss\.art19\.com', # podcasts
     '.*\.buzzsprout\.com', # podcasts
@@ -53,6 +55,7 @@ allowlist = [
     'spclient\.wg\.spotify\.com', # client APIs, ads/tracking (blocked in blacklist)
     'audio-fa\.spotifycdn\.com', # audio
     'seed-mix-image\.spotifycdn\.com', # mix images
+    'api\.spreaker\.com', # podcasts
     'download\.ted\.com', # podcasts
     'www\.youtube\.com', # YouTube (Spicetify Reddit app)
     'i\.ytimg\.com', # YouTube images (Spicetify Reddit app)
@@ -63,15 +66,12 @@ allowlist = [
     'audio-ak-spotify-com\.akamaized\.net', # audio
     'audio4-ak-spotify-com\.akamaized\.net', # audio
     'heads4-ak-spotify-com\.akamaized\.net', # audio (heads)
+    'd1dwvcwq657ipv\.cloudfront\.net', # podcasts
     'audio4-ak\.spotify\.com\.edgesuite\.net', # audio
     'scontent.*\.fbcdn\.net', # Facebook profile images
     'audio-sp-.*\.spotifycdn\.net', # audio
     'dovetail\.prxu\.org', # podcasts
     'dovetail-cdn\.prxu\.org', # podcasts
-    'sphinx\.acast\.com', # podcasts
-    'api\.spreaker\.com', # podcasts
-    'stitcher\.acast\.com', # podcasts
-    'd1dwvcwq657ipv\.cloudfront\.net', # podcasts
 ]
 
 denylist = [
