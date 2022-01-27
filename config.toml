@@ -20,8 +20,7 @@ allowlist = [
     't\.scdn\.co', # background images
     'thisis-images\.scdn\.co', # 'this is' playlists images
     'video-fa\.scdn\.co', # videos
-    'sphinx\.acast\.com', # podcasts
-    'stitcher\.acast\.com', # podcasts
+    '.*\.acast\.com', # podcasts
     'content\.production\.cdn\.art19\.com', # podcasts
     'rss\.art19\.com', # podcasts
     '.*\.buzzsprout\.com', # podcasts
@@ -66,7 +65,7 @@ allowlist = [
     'audio-ak-spotify-com\.akamaized\.net', # audio
     'audio4-ak-spotify-com\.akamaized\.net', # audio
     'heads4-ak-spotify-com\.akamaized\.net', # audio (heads)
-    'd1dwvcwq657ipv\.cloudfront\.net', # podcasts
+    '.*\.cloudfront\.net', # podcasts
     'audio4-ak\.spotify\.com\.edgesuite\.net', # audio
     'scontent.*\.fbcdn\.net', # Facebook profile images
     'audio-sp-.*\.spotifycdn\.net', # audio
