@@ -30,6 +30,7 @@ $ mkdir -p ~/.spotify-adblock && cp target/release/libspotifyadblock.so ~/.spoti
 $ mkdir -p ~/.config/spotify-adblock && cp config.toml ~/.config/spotify-adblock
 $ flatpak override --user --filesystem="~/.spotify-adblock/spotify-adblock.so" --filesystem="~/.config/spotify-adblock/config.toml" com.spotify.Client
 ```
+### Note : If you get any error while running with flatpak, then try this [issue #24 ](https://github.com/abba23/spotify-adblock/issues/24#issuecomment-869702786)
 
 ## Usage
 ### Command-line
