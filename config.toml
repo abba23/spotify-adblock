@@ -53,6 +53,7 @@ allowlist = [
     '.*-spclient\.spotify\.com', # client APIs
     'spclient\.wg\.spotify\.com', # client APIs, ads/tracking (blocked in blacklist)
     'audio-fa\.spotifycdn\.com', # audio
+    'mixed-media-images\.spotifycdn\.com', # mix images
     'seed-mix-image\.spotifycdn\.com', # mix images
     'api\.spreaker\.com', # podcasts
     'download\.ted\.com', # podcasts
