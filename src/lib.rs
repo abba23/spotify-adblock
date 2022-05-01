@@ -35,8 +35,13 @@ macro_rules! hook {
     }
 }
 
-#[derive(Deserialize)]
 struct Config {
+    allowlist: Vec<Regex>,
+    denylist: Vec<Regex>,
+}
+
+#[derive(Deserialize)]
+struct ConfigRaw {
     allowlist: Vec<String>,
     denylist: Vec<String>,
 }
@@ -53,9 +58,33 @@ lazy_static! {
         if let Some(path) = config_paths.into_iter().find(|path| path.exists()) {
             println!("[*] Config file: {}", path.to_str().unwrap());
             match read_to_string(path) {
-                Ok(config_string) => match toml::from_str(&config_string) {
+                Ok(config_string) => match toml::from_str::<ConfigRaw>(&config_string) {
                     Ok(config) => {
-                        return config;
+                        let mut config_fixed = Config {
+                            allowlist: Vec::new(),
+                            denylist: Vec::new(),
+                        };
+                        for allowed in config.allowlist {
+                            match Regex::new(&allowed) {
+                                Ok(regex) => {
+                                    config_fixed.allowlist.push(regex);
+                                }
+                                Err(error) => {
+                                    println!("[*] Warning: Invalid regex ({})", error);
+                                }
+                            }
+                        }
+                        for denied in config.denylist {
+                            match Regex::new(&denied) {
+                                Ok(regex) => {
+                                    config_fixed.denylist.push(regex);
+                                }
+                                Err(error) => {
+                                    println!("[*] Warning: Invalid regex ({})", error);
+                                }
+                            }
+                        }
+                        return config_fixed;
                     }
                     Err(error) => {
                         println!("[*] Error: Parse config file ({})", error);
@@ -106,18 +135,10 @@ hook! {
     }
 }
 
-fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    for regex_string in regex_list {
-        // TODO: only generate each regex once outside of loop
-        match Regex::new(&regex_string) {
-            Ok(regex) => {
-                if regex.is_match(element) {
-                    return true;
-                }
-            }
-            Err(error) => {
-                println!("[*] Warning: Invalid regex ({})", error);
-            }
+fn listed(element: &str, regex_list: &Vec<Regex>) -> bool {
+    for regex in regex_list {
+        if regex.is_match(element) {
+            return true;
         }
     }
     false
