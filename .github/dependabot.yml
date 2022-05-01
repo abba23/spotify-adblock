@@ -1,0 +1,22 @@
+# Automatically keep dependencies up to date with use of GitHub's Dependabot. 
+# Ref: https://docs.github.com/en/code-security/supply-chain-security/keeping-your-dependencies-updated-automatically/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  # Help maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      # Runs on every weekday, Monday to Friday
+      interval: "daily"
+    # Do not create new pull requests if there already are 10 or more PRs
+    open-pull-requests-limit: 10
+
+  # Maintain dependencies for Rust/Cargo packages
+  - package-ecosystem: "cargo"
+    directory: "/"
+    schedule:
+      # Runs on every weekday, Monday to Friday
+      interval: "daily"
+    # Do not create new pull requests if there already are 10 or more PRs
+    open-pull-requests-limit: 10
