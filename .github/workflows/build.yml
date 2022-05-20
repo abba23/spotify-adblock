@@ -13,7 +13,7 @@ jobs:
     - name: Strip binary
       run: strip target/release/libspotifyadblock.so
     - name: Create build artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3.1.0
       with:
         name: spotify-adblock.so
         path: target/release/libspotifyadblock.so
