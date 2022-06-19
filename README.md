@@ -17,6 +17,8 @@ Prerequisites:
 $ git clone https://github.com/abba23/spotify-adblock.git
 $ cd spotify-adblock
 $ make
+# Or use a container for the build e.g podman/docker
+# podman run -it --rm -v `pwd`:/app:Z --workdir /app docker.io/library/rust make
 ```
 
 ## Install
