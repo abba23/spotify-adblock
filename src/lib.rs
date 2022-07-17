@@ -109,7 +109,7 @@ hook! {
 fn listed(element: &str, regex_list: &Vec<String>) -> bool {
     for regex_string in regex_list {
         // TODO: only generate each regex once outside of loop
-        match Regex::new(&regex_string) {
+        match Regex::new(regex_string) {
             Ok(regex) => {
                 if regex.is_match(element) {
                     return true;
