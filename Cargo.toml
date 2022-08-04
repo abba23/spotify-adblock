@@ -1,6 +1,6 @@
 [package]
 name = "spotify-adblock"
-version = "1.0.1"
+version = "1.0.2"
 authors = ["abba23"]
 description = "Adblocker for Spotify"
 edition = "2018"
