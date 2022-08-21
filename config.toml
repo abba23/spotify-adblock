@@ -72,6 +72,8 @@ allowlist = [
     'audio-sp-.*\.spotifycdn\.net', # audio
     'dovetail\.prxu\.org', # podcasts
     'dovetail-cdn\.prxu\.org', # podcasts
+    '.*\.github\.com', #Github (Spicetify marketplace)
+    '.*\.githubusercontent\.com', #Github (Spicetify marketplace)
 ]
 
 denylist = [
