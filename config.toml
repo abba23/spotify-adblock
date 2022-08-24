@@ -29,8 +29,7 @@ allowlist = [
     'genius\.com', # lyrics (genius-spicetify)
     '.*\.googlevideo\.com', # YouTube videos (Spicetify Reddit app)
     '.*\.gvt1\.com', # Widevine download
-    'hwcdn\.libsyn\.com', # podcasts
-    'traffic\.libsyn\.com', # podcasts
+    '.*\.libsyn\.com', # podcasts
     'api.*-desktop\.musixmatch\.com', # lyrics (genius-spicetify)
     '.*\.podbean\.com', # podcasts
     'cdn\.podigee\.com', # podcasts
