@@ -29,8 +29,7 @@ allowlist = [
     'genius\.com', # lyrics (genius-spicetify)
     '.*\.googlevideo\.com', # YouTube videos (Spicetify Reddit app)
     '.*\.gvt1\.com', # Widevine download
-    'hwcdn\.libsyn\.com', # podcasts
-    'traffic\.libsyn\.com', # podcasts
+    '.*\.libsyn\.com', # podcasts
     'api.*-desktop\.musixmatch\.com', # lyrics (genius-spicetify)
     '.*\.podbean\.com', # podcasts
     'cdn\.podigee\.com', # podcasts
@@ -72,6 +71,8 @@ allowlist = [
     'audio-sp-.*\.spotifycdn\.net', # audio
     'dovetail\.prxu\.org', # podcasts
     'dovetail-cdn\.prxu\.org', # podcasts
+    '.*\.github\.com', #Github (Spicetify marketplace)
+    '.*\.githubusercontent\.com', #Github (Spicetify marketplace)
 ]
 
 denylist = [
