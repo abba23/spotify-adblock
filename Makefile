@@ -16,10 +16,11 @@ ifeq ($(PROFILE), release)
 else
 	cargo build
 endif
+	strip $(BINARY_PATH)
 
 .PHONY: clean
 clean:
-	rm -rf target
+	rm -rf target Cargo.lock
 
 .PHONY: install
 install: $(BINARY_PATH) $(CONFIG_PATH)
