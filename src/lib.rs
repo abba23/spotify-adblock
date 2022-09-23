@@ -28,6 +28,9 @@ macro_rules! hook {
             };
         }
 
+        /// # Safety
+        ///
+        /// This function should not be called before the horsemen are ready. Silent Clippy Lint.
         #[no_mangle]
         pub unsafe extern "C" fn $function_name($($parameter_name: $parameter_type),*) -> $return_type {
             $body
