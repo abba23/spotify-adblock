@@ -8,7 +8,7 @@ edition = "2018"
 [dependencies]
 lazy_static = "*"
 libc = "*"
-regex = "*"
+regex = ">=1.5.5"
 serde = { version = "*", features = ["derive"] }
 toml = "*"
 
