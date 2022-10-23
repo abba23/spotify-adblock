@@ -102,3 +102,25 @@ The allowlist and denylist can be configured in a config file located at (in asc
 * `/etc/spotify-adblock/config.toml` *(default)*
 * `~/.config/spotify-adblock/config.toml` *(default for Flatpak)*
 * `config.toml` in the working directory
+
+
+## Proxy fix
+Using `spotify-adblock` makes Spotify build-in proxy disfunctional. In order to use HTTP or Socks proxy you'd need to preload both `spotify-adblock` and a proxy such as [`proxychains`](https://github.com/haad/proxychains).
+
+Installing `Proxychains` on debian systems is easy:
+
+```
+apt install proxychains proxychains4   # proxychains4 is optional
+```
+Then edit the configuration file at `nano /etc/proxychains.conf` and add your proxy information at the end of the file.
+
+
+Last step, preload both of them in order to open Spotify:
+
+```
+LD_PRELOAD=/usr/lib/x86_64-linux-gnu/libproxychains.so.4:/usr/local/lib/spotify-adblock.so spotify --no-zygote
+```
+
+`--no-zygote` might not be necessary but there is a chance that the command does not work without it. It disables GPU hardware acceleration on Spotify and lets preload work correcly. Also make sure to replace `libproxychains.so.4` and `spotify-adblock.so` path according to your linux installation.
+
+
