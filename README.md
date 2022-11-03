@@ -14,32 +14,32 @@ Prerequisites:
 * [Cargo](https://doc.rust-lang.org/cargo/)
 
 ```bash
-$ git clone https://github.com/abba23/spotify-adblock.git
-$ cd spotify-adblock
-$ make
+git clone https://github.com/abba23/spotify-adblock.git
+cd spotify-adblock
+make
 ```
 
 ## Install
 ```bash
-$ sudo make install
+sudo make install
 ```
 
 #### Flatpak
 ```bash
-$ mkdir -p ~/.spotify-adblock && cp target/release/libspotifyadblock.so ~/.spotify-adblock/spotify-adblock.so
-$ mkdir -p ~/.config/spotify-adblock && cp config.toml ~/.config/spotify-adblock
-$ flatpak override --user --filesystem="~/.spotify-adblock/spotify-adblock.so" --filesystem="~/.config/spotify-adblock/config.toml" com.spotify.Client
+mkdir -p ~/.spotify-adblock && cp target/release/libspotifyadblock.so ~/.spotify-adblock/spotify-adblock.so
+mkdir -p ~/.config/spotify-adblock && cp config.toml ~/.config/spotify-adblock
+flatpak override --user --filesystem="~/.spotify-adblock/spotify-adblock.so" --filesystem="~/.config/spotify-adblock/config.toml" com.spotify.Client
 ```
 
 ## Usage
 ### Command-line
 ```bash
-$ LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify
+LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify
 ```
 
 #### Flatpak
 ```bash
-$ flatpak run --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"'
+flatpak run --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"'
 ```
 
 ### Desktop file
@@ -88,13 +88,13 @@ StartupWMClass=spotify
 
 ## Uninstall
 ```bash
-$ sudo make uninstall
+sudo make uninstall
 ```
 
 #### Flatpak
 ```bash
-$ rm -r ~/.spotify-adblock ~/.config/spotify-adblock
-$ flatpak override --user --reset com.spotify.Client
+rm -r ~/.spotify-adblock ~/.config/spotify-adblock
+flatpak override --user --reset com.spotify.Client
 ```
 
 ## Configuration
