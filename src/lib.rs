@@ -95,7 +95,7 @@ hook! {
 hook! {
     cef_urlrequest_create(request: *mut _cef_request_t, client: *const _cef_urlrequest_client_t, request_context: *const _cef_request_context_t) -> *const cef_urlrequest_t => REAL_CEF_URLREQUEST_CREATE {
         let url_cef = (*request).get_url.unwrap()(request);
-        let url_utf16 = from_raw_parts((*url_cef).str_, (*url_cef).length as usize);
+        let url_utf16 = from_raw_parts((*url_cef).str_, (*url_cef).length);
         let url = String::from_utf16(url_utf16).unwrap();
         cef_string_userfree_utf16_free(url_cef);
 
@@ -110,7 +110,7 @@ hook! {
 }
 
 fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    let set = RegexSet::new(regex_list.into_iter()).unwrap();
+    let set = RegexSet::new(regex_list.iter()).unwrap();
     if set.is_match(element) {
         return true;
     }
