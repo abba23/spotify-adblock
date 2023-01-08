@@ -5,7 +5,7 @@ use cef::{
 };
 use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
-use regex::Regex;
+use regex::RegexSet;
 use serde::Deserialize;
 use std::ffi::CStr;
 use std::fs::read_to_string;
@@ -110,18 +110,9 @@ hook! {
 }
 
 fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    for regex_string in regex_list {
-        // TODO: only generate each regex once outside of loop
-        match Regex::new(regex_string) {
-            Ok(regex) => {
-                if regex.is_match(element) {
-                    return true;
-                }
-            }
-            Err(error) => {
-                println!("[*] Warning: Invalid regex ({})", error);
-            }
-        }
+    let set = RegexSet::new(regex_list.into_iter()).unwrap();
+    if set.is_match(element) {
+        return true;
     }
     false
 }
