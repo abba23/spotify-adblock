@@ -109,7 +109,7 @@ hook! {
     }
 }
 
-fn listed(element: &str, regex_list: &Vec<String>) -> bool {
+fn listed(element: &str, regex_list: &[String]) -> bool {
     let set = RegexSet::new(regex_list.iter()).unwrap();
     if set.is_match(element) {
         return true;
