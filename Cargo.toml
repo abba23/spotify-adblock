@@ -6,7 +6,6 @@ edition = "2018"
 description = "Adblocker for Spotify"
 readme = "README.md"
 license = "GPL-3.0-or-later"
-license-file = "LICENSE"
 
 [dependencies]
 lazy_static = "*"
