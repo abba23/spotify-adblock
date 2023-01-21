@@ -2,6 +2,7 @@
 
 # Script to automatically fix Spofity (after it has been updated)
 # See: https://github.com/abba23/spotify-adblock/issues/12
+# SPDX-License-Identifier: GPL-3.0-or-later
 
 if which spotify > /dev/null; then
     sPATH=$(dirname "$(realpath -L "$(which spotify)")")  # absolute path to Spotify
