@@ -35,14 +35,59 @@ macro_rules! hook {
     }
 }
 
-#[derive(Deserialize)]
-struct Config {
-    allowlist: Vec<String>,
-    denylist: Vec<String>,
-}
+mod cfg {
+    pub struct Config {
+        pub allowlist: Vec<Regex>,
+        pub denylist: Vec<Regex>,
+    }
+
+    impl<'de> Deserialize<'de> for Config {
+        fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            let wrapped_cfg = WrappedConfig::deserialize(deserializer)?;
+            Ok(Config {
+                allowlist: wrapped_cfg
+                    .allowlist
+                    .into_iter()
+                    .map(|RegexWrapper(r)| -> Regex { r })
+                    .collect(),
+                denylist: wrapped_cfg
+                    .denylist
+                    .into_iter()
+                    .map(|RegexWrapper(r)| -> Regex { r })
+                    .collect(),
+            })
+        }
+    }
+
+    use crate::Deserialize;
+    use crate::Regex;
+
+    struct RegexWrapper(Regex);
+
+    #[derive(Deserialize)]
+    struct WrappedConfig {
+        allowlist: Vec<RegexWrapper>,
+        denylist: Vec<RegexWrapper>,
+    }
+
+    impl<'de> Deserialize<'de> for RegexWrapper {
+        fn deserialize<D>(deserializer: D) -> Result<Self, <D as serde::Deserializer<'de>>::Error>
+        where
+            D: serde::Deserializer<'de>,
+        {
+            match Regex::new(String::deserialize(deserializer)?.as_str()) {
+                Ok(regex) => Ok(RegexWrapper(regex)),
+                Err(e) => todo!(),
+            }
+        }
+    }
+} // mod cfg
 
 lazy_static! {
-    static ref CONFIG: Config = {
+    static ref CONFIG: cfg::Config = {
         let config_paths = vec![
             PathBuf::from("config.toml"),
             #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
@@ -68,7 +113,7 @@ lazy_static! {
         } else {
             println!("[*] Error: No config file");
         };
-        Config {
+        cfg::Config {
             allowlist: Vec::new(),
             denylist: Vec::new(),
         }
@@ -106,19 +151,17 @@ hook! {
     }
 }
 
-fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    for regex_string in regex_list {
-        // TODO: only generate each regex once outside of loop
-        match Regex::new(&regex_string) {
-            Ok(regex) => {
-                if regex.is_match(element) {
-                    return true;
-                }
-            }
-            Err(error) => {
-                println!("[*] Warning: Invalid regex ({})", error);
-            }
-        }
+fn listed(element: &str, regex_list: &Vec<Regex>) -> bool {
+    regex_list.iter().any(|regex| -> bool { regex.is_match(element) })
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn it_works() {
+        toml::from_str::<cfg::Config>(read_to_string("config.toml").unwrap().as_str()).unwrap();
     }
-    false
 }
