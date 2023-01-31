@@ -62,11 +62,11 @@ lazy_static! {
                         return config;
                     }
                     Err(error) => {
-                        println!("[*] Error: Parse config file ({})", error);
+                        println!("[*] Error: Parse config file ({error})");
                     }
                 },
                 Err(error) => {
-                    println!("[*] Error: Read config file ({})", error);
+                    println!("[*] Error: Read config file ({error})");
                 }
             }
         } else {
@@ -84,10 +84,10 @@ hook! {
         let domain = CStr::from_ptr(node).to_str().unwrap();
 
         if listed(domain, &CONFIG.allowlist) {
-            println!("[+] getaddrinfo:\t\t {}", domain);
+            println!("[+] getaddrinfo:\t\t {domain}");
             REAL_GETADDRINFO(node, service, hints, res)
         } else {
-            println!("[-] getaddrinfo:\t\t {}", domain);
+            println!("[-] getaddrinfo:\t\t {domain}");
             EAI_FAIL
         }
     }
@@ -101,10 +101,10 @@ hook! {
         cef_string_userfree_utf16_free(url_cef);
 
         if listed(&url, &CONFIG.denylist) {
-            println!("[-] cef_urlrequest_create:\t {}", url);
+            println!("[-] cef_urlrequest_create:\t {url}");
             null()
         } else {
-            println!("[+] cef_urlrequest_create:\t {}", url);
+            println!("[+] cef_urlrequest_create:\t {url}");
             REAL_CEF_URLREQUEST_CREATE(request, client, request_context)
         }
     }
