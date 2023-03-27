@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-3.0-or-later
 mod cef;
 
 use cef::{
@@ -5,7 +6,7 @@ use cef::{
 };
 use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
-use regex::Regex;
+use regex::RegexSet;
 use serde::Deserialize;
 use std::ffi::CStr;
 use std::fs::read_to_string;
@@ -28,6 +29,9 @@ macro_rules! hook {
             };
         }
 
+        /// # Safety
+        ///
+        /// This function should not be called before the horsemen are ready. Silent Clippy Lint.
         #[no_mangle]
         pub unsafe extern "C" fn $function_name($($parameter_name: $parameter_type),*) -> $return_type {
             $body
@@ -58,11 +62,11 @@ lazy_static! {
                         return config;
                     }
                     Err(error) => {
-                        println!("[*] Error: Parse config file ({})", error);
+                        println!("[*] Error: Parse config file ({error})");
                     }
                 },
                 Err(error) => {
-                    println!("[*] Error: Read config file ({})", error);
+                    println!("[*] Error: Read config file ({error})");
                 }
             }
         } else {
@@ -80,10 +84,10 @@ hook! {
         let domain = CStr::from_ptr(node).to_str().unwrap();
 
         if listed(domain, &CONFIG.allowlist) {
-            println!("[+] getaddrinfo:\t\t {}", domain);
+            println!("[+] getaddrinfo:\t\t {domain}");
             REAL_GETADDRINFO(node, service, hints, res)
         } else {
-            println!("[-] getaddrinfo:\t\t {}", domain);
+            println!("[-] getaddrinfo:\t\t {domain}");
             EAI_FAIL
         }
     }
@@ -92,33 +96,24 @@ hook! {
 hook! {
     cef_urlrequest_create(request: *mut _cef_request_t, client: *const _cef_urlrequest_client_t, request_context: *const _cef_request_context_t) -> *const cef_urlrequest_t => REAL_CEF_URLREQUEST_CREATE {
         let url_cef = (*request).get_url.unwrap()(request);
-        let url_utf16 = from_raw_parts((*url_cef).str_, (*url_cef).length as usize);
+        let url_utf16 = from_raw_parts((*url_cef).str_, (*url_cef).length);
         let url = String::from_utf16(url_utf16).unwrap();
         cef_string_userfree_utf16_free(url_cef);
 
         if listed(&url, &CONFIG.denylist) {
-            println!("[-] cef_urlrequest_create:\t {}", url);
+            println!("[-] cef_urlrequest_create:\t {url}");
             null()
         } else {
-            println!("[+] cef_urlrequest_create:\t {}", url);
+            println!("[+] cef_urlrequest_create:\t {url}");
             REAL_CEF_URLREQUEST_CREATE(request, client, request_context)
         }
     }
 }
 
-fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    for regex_string in regex_list {
-        // TODO: only generate each regex once outside of loop
-        match Regex::new(&regex_string) {
-            Ok(regex) => {
-                if regex.is_match(element) {
-                    return true;
-                }
-            }
-            Err(error) => {
-                println!("[*] Warning: Invalid regex ({})", error);
-            }
-        }
+fn listed(element: &str, regex_list: &[String]) -> bool {
+    let set = RegexSet::new(regex_list.iter()).unwrap();
+    if set.is_match(element) {
+        return true;
     }
     false
 }

@@ -7,13 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3.5.0
     - name: Run make
       run: make
     - name: Strip binary
       run: strip target/release/libspotifyadblock.so
     - name: Create build artifact
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3.1.2
       with:
         name: spotify-adblock.so
         path: target/release/libspotifyadblock.so
