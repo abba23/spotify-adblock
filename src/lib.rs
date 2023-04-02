@@ -7,13 +7,7 @@ use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
 use regex::Regex;
 use serde::Deserialize;
-use std::ffi::CStr;
-use std::fs::read_to_string;
-use std::mem;
-use std::path::PathBuf;
-use std::ptr::null;
-use std::slice::from_raw_parts;
-use std::string::String;
+use std::{ffi::CStr, fs::read_to_string, mem, path::PathBuf, ptr::null, slice::from_raw_parts, string::String};
 
 macro_rules! hook {
     ($function_name:ident($($parameter_name:ident: $parameter_type:ty),*) -> $return_type:ty => $new_function_name:ident $body:block) => {
@@ -37,8 +31,10 @@ macro_rules! hook {
 
 #[derive(Deserialize)]
 struct Config {
-    allowlist: Vec<String>,
-    denylist: Vec<String>,
+    #[serde(with = "serde_regex")]
+    allowlist: Vec<Regex>,
+    #[serde(with = "serde_regex")]
+    denylist: Vec<Regex>,
 }
 
 lazy_static! {
@@ -106,19 +102,6 @@ hook! {
     }
 }
 
-fn listed(element: &str, regex_list: &Vec<String>) -> bool {
-    for regex_string in regex_list {
-        // TODO: only generate each regex once outside of loop
-        match Regex::new(&regex_string) {
-            Ok(regex) => {
-                if regex.is_match(element) {
-                    return true;
-                }
-            }
-            Err(error) => {
-                println!("[*] Warning: Invalid regex ({})", error);
-            }
-        }
-    }
-    false
+fn listed(element: &str, regex_list: &Vec<Regex>) -> bool {
+    regex_list.into_iter().any(|regex| regex.is_match(element))
 }
