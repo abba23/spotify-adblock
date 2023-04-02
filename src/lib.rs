@@ -1,7 +1,7 @@
 mod cef;
 
 use cef::{
-    _cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_string_userfree_utf16_free, cef_urlrequest_t,
+    _cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_string_userfree_utf16_t, cef_urlrequest_t,
 };
 use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
@@ -99,6 +99,12 @@ hook! {
             println!("[+] cef_urlrequest_create:\t {}", url);
             REAL_CEF_URLREQUEST_CREATE(request, client, request_context)
         }
+    }
+}
+
+hook! {
+    cef_string_userfree_utf16_free(_str: cef_string_userfree_utf16_t) -> () => REAL_CEF_STRING_USERFREE_UTF16_FREE {
+        REAL_CEF_STRING_USERFREE_UTF16_FREE(_str);
     }
 }
 
