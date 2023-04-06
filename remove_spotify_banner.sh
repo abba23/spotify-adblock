@@ -28,7 +28,7 @@ fi
 if [ -w xpui.spa ] && [ -w . ]; then
     cp xpui.spa xpui.spa_bak  # create a backup, in case of trouble
     # shellcheck disable=SC2094
-    unzip -p xpui.spa xpui.js | sed 's/{adsEnabled:\!0}/{adsEnabled:false}/' > xpui.js
+    unzip -p xpui.spa xpui.js | sed 's/adsEnabled:\!0/adsEnabled:false/' > xpui.js
     zip --update xpui.spa xpui.js
     rm xpui.js
     echo "Success"
