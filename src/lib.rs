@@ -5,7 +5,7 @@ use cef::{
 };
 use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
-use regex::Regex;
+use regex::RegexSet;
 use serde::Deserialize;
 use std::{ffi::CStr, fs::read_to_string, mem, path::PathBuf, ptr::null, slice::from_raw_parts, string::String};
 
@@ -32,9 +32,9 @@ macro_rules! hook {
 #[derive(Deserialize)]
 struct Config {
     #[serde(with = "serde_regex")]
-    allowlist: Vec<Regex>,
+    allowlist: RegexSet,
     #[serde(with = "serde_regex")]
-    denylist: Vec<Regex>,
+    denylist: RegexSet,
 }
 
 lazy_static! {
@@ -65,8 +65,8 @@ lazy_static! {
             println!("[*] Error: No config file");
         };
         Config {
-            allowlist: Vec::new(),
-            denylist: Vec::new(),
+            allowlist: RegexSet::empty(),
+            denylist: RegexSet::empty(),
         }
     };
 }
@@ -75,7 +75,7 @@ hook! {
     getaddrinfo(node: *const c_char, service: *const c_char, hints: *const addrinfo, res: *const *const addrinfo) -> i32 => REAL_GETADDRINFO {
         let domain = CStr::from_ptr(node).to_str().unwrap();
 
-        if listed(domain, &CONFIG.allowlist) {
+        if CONFIG.allowlist.is_match(&domain) {
             println!("[+] getaddrinfo:\t\t {}", domain);
             REAL_GETADDRINFO(node, service, hints, res)
         } else {
@@ -92,7 +92,7 @@ hook! {
         let url = String::from_utf16(url_utf16).unwrap();
         cef_string_userfree_utf16_free(url_cef);
 
-        if listed(&url, &CONFIG.denylist) {
+        if CONFIG.denylist.is_match(&url) {
             println!("[-] cef_urlrequest_create:\t {}", url);
             null()
         } else {
@@ -106,8 +106,4 @@ hook! {
     cef_string_userfree_utf16_free(_str: cef_string_userfree_utf16_t) -> () => REAL_CEF_STRING_USERFREE_UTF16_FREE {
         REAL_CEF_STRING_USERFREE_UTF16_FREE(_str);
     }
-}
-
-fn listed(element: &str, regex_list: &Vec<Regex>) -> bool {
-    regex_list.into_iter().any(|regex| regex.is_match(element))
 }
