@@ -139,7 +139,7 @@ dependencies = [
 
 [[package]]
 name = "spotify-adblock"
-version = "1.0.2"
+version = "1.0.3"
 dependencies = [
  "lazy_static",
  "libc",
