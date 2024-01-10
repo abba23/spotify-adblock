@@ -71,18 +71,6 @@ StartupWMClass=spotify
   <summary>Flatpak</summary>
   <p>
 
-```
-[Desktop Entry]
-Type=Application
-Name=Spotify (adblock)
-GenericName=Music Player
-Icon=com.spotify.Client
-Exec=flatpak run --file-forwarding --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"' @@u %U @@
-Terminal=false
-MimeType=x-scheme-handler/spotify;
-Categories=Audio;Music;Player;AudioVideo;
-StartupWMClass=spotify
-```
   </p>
 </details>
 
