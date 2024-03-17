@@ -79,5 +79,7 @@ allowlist = [
 denylist = [
     'https://spclient\.wg\.spotify\.com/ads/.*', # ads
     'https://spclient\.wg\.spotify\.com/ad-logic/.*', # ads
+    'https://pubads\.g\.doubleclick\.net/.*', # ads
+    'https://securepubads\.g\.doubleclick\.net/.*', # ads
     'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*', # tracking
 ]
