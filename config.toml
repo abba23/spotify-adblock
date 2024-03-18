@@ -47,6 +47,15 @@ allowlist = [
     'api-partner\.spotify\.com', # album/artist pages
     'xpui\.app\.spotify\.com', # user interface
     'apresolve\.spotify\.com', # access point resolving
+    'spotify\.com', # signup
+    'www\.spotify\.com', # signup
+    'challenge\.spotify\.com', # signup captcha
+    'challenge\.spotifycdn\.com', # signup captcha
+    'accounts\.spotify\.com', # login
+    'www\.google\.com', # login
+    'accounts\.scdn\.co', # modify account
+    'www\.scdn\.co', # modify account
+    'wap\.spotifycdn\.com', # modify account
     'clienttoken\.spotify\.com', # login
     '.*dealer\.spotify\.com', # websocket connections
     'image-upload.*\.spotify\.com', # image uploading
