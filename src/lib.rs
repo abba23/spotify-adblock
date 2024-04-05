@@ -7,7 +7,7 @@ use lazy_static::lazy_static;
 use libc::{addrinfo, c_char, dlsym, EAI_FAIL, RTLD_NEXT};
 use regex::RegexSet;
 use serde::Deserialize;
-use std::{ffi::CStr, fs::read_to_string, mem, path::PathBuf, ptr::null, slice::from_raw_parts, string::String};
+use std::{env, ffi::CStr, fs::read_to_string, mem, path::PathBuf, ptr::null, slice::from_raw_parts, string::String};
 
 macro_rules! hook {
     ($function_name:ident($($parameter_name:ident: $parameter_type:ty),*) -> $return_type:ty => $new_function_name:ident $body:block) => {
@@ -41,8 +41,11 @@ lazy_static! {
     static ref CONFIG: Config = {
         let config_paths = vec![
             PathBuf::from("config.toml"),
-            #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
-            std::env::home_dir().unwrap().join(".config/spotify-adblock/config.toml"),
+            match env::var("XDG_CONFIG_HOME") {
+                Ok(xdg_config_home) => PathBuf::from(xdg_config_home),
+                #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
+                Err(_) => PathBuf::from(env::home_dir().unwrap()).join(".config")
+            }.join("spotify-adblock/config.toml"),
             PathBuf::from("/etc/spotify-adblock/config.toml"),
         ];
 
