@@ -100,5 +100,5 @@ $ flatpak override --user --reset com.spotify.Client
 ## Configuration
 The allowlist and denylist can be configured in a config file located at (in ascending order of precedence):
 * `/etc/spotify-adblock/config.toml` *(default)*
-* `~/.config/spotify-adblock/config.toml` *(default for Flatpak)*
+* `$XDG_CONFIG_HOME/spotify-adblock/config.toml` or `~/.config/spotify-adblock/config.toml` *(default, user-wide)*
 * `config.toml` in the working directory
