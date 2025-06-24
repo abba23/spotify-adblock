@@ -18,4 +18,4 @@ use_try_shorthand = false
 
 # Prevent rustfmt from trying to format bindgen-generated code
 skip_children = true
-ignore = ["src/cef.rs"]
+ignore = ["spotify-adblock/src/cef.rs"]

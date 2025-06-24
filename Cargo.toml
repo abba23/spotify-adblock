@@ -1,25 +1,31 @@
-[package]
-name = "spotify-adblock"
-version = "1.0.3"
+[workspace]
+members = ["spotify-adblock", "cef-sys"]
+exclude = []
+resolver = "2"
+
+# Shared workspace dependencies for version consistency
+[workspace.dependencies]
+# Core dependencies
+lazy_static = "1.5"
+libc = "0.2"
+regex = "1.10"
+serde = { version = "1.0", features = ["derive"] }
+serde_regex = "1.1"
+toml = "0.8"
+
+# Build dependencies
+bindgen = "0.70"
+cc = "1.0"
+
+# THIS SECTION WAS MISSING - ADD IT:
+[workspace.package]
 authors = ["coleleavitt"]
-description = "Adblocker for Spotify"
-edition = "2021"  # Using latest stable edition
+edition = "2021"  # Changed from "2024" to "2021"
 license = "MIT"
 repository = "https://github.com/coleleavitt/spotify-adblock"
+rust-version = "1.75"
 
-[dependencies]
-# Fixed versions for reproducible builds
-lazy_static = "*"
-libc = "*"
-regex = "*"
-serde = { version = "*", features = ["derive"] }
-serde_regex = "*"
-toml = "*"
-
-[lib]
-name = "spotifyadblock"
-crate-type = ["cdylib"]
-
+# Workspace-wide profiles
 [profile.release]
 lto = true                          # Link-time optimization
 opt-level = 3                       # Maximum optimization
@@ -35,12 +41,32 @@ debug = true                        # Keep debug info for verification tools
 debug-assertions = true             # Enable assertions
 overflow-checks = true              # Critical safety check
 
-# Enforce memory safety and code quality
-[lints.rust]
-unsafe_code = "warn"                # Track unsafe code usage
-#missing_docs = "warn"               # Ensure documentation
-non_ascii_idents = "forbid"         # Ensure readable identifiers
+# Development profile optimizations
+[profile.dev]
+opt-level = 1                       # Some optimization for faster builds
+overflow-checks = true              # Safety checks in development
 
-[lints.clippy]
+# Enforce memory safety and code quality workspace-wide
+[workspace.lints.rust]
+unsafe_code = "warn"                # Track unsafe code usage
+non_ascii_idents = "forbid"         # Ensure readable identifiers
+missing_debug_implementations = "warn"
+missing_copy_implementations = "warn"
+trivial_casts = "warn"
+trivial_numeric_casts = "warn"
+unused_import_braces = "warn"
+unused_qualifications = "warn"
+
+[workspace.lints.clippy]
 all = "deny"                        # Enable all clippy lints
 pedantic = "warn"                   # Strict code quality standards
+nursery = "warn"                    # Experimental lints
+cargo = "warn"                      # Cargo-specific lints
+
+# Workspace metadata for tools
+[workspace.metadata]
+docs = { all-features = true, rustdoc-args = ["--cfg", "docsrs"] }
+
+# Workspace patch section for any dependency overrides if needed
+[patch.crates-io]
+# Add any patches here if needed in the future

@@ -1,0 +1,28 @@
+[package]
+name = "spotify-adblock"
+authors.workspace = true
+description = "Adblocker for Spotify"
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+rust-version.workspace = true
+
+[dependencies]
+# Use workspace dependencies
+lazy_static.workspace = true
+libc.workspace = true
+regex.workspace = true
+serde.workspace = true
+serde_regex.workspace = true
+toml.workspace = true
+
+# Internal workspace dependency
+cef-sys = { path = "../cef-sys" }
+
+[lib]
+name = "spotifyadblock"
+crate-type = ["cdylib"]
+
+# Inherit workspace lints
+[lints]
+workspace = true

@@ -8,7 +8,6 @@
 #![allow(unused_unsafe)]
 #![allow(unused_doc_comments)]
 
-pub mod cef;
 pub mod config;
 pub mod hooks;
 pub mod utils;
