@@ -27,7 +27,7 @@ macro_rules! hook {
             };
         }
 
-        #[no_mangle]
+        #[unsafe(no_mangle)]
         pub extern "C" fn $function_name($($parameter_name: $parameter_type),*) -> $return_type {
             $body
         }
