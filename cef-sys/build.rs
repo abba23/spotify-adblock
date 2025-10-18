@@ -9,16 +9,17 @@ fn main() {
     let cef_path = PathBuf::from(&cef_root);
 
     // Verify CEF directory structure
-    if !cef_path.join("include").exists() {
-        panic!("CEF include directory not found. Check CEF_ROOT path: {}", cef_root);
-    }
+    assert!(
+        cef_path.join("include").exists(),
+        "CEF include directory not found. Check CEF_ROOT path: {cef_root}"
+    );
 
-    println!("cargo:rerun-if-changed={}/include", cef_root);
+    println!("cargo:rerun-if-changed={cef_root}/include");
     println!("cargo:rerun-if-env-changed=CEF_ROOT");
 
     // Set up library search paths
-    println!("cargo:rustc-link-search=native={}/Release", cef_root);
-    println!("cargo:rustc-link-search=native={}/Debug", cef_root);
+    println!("cargo:rustc-link-search=native={cef_root}/Release");
+    println!("cargo:rustc-link-search=native={cef_root}/Debug");
 
     // Link CEF libraries
     println!("cargo:rustc-link-lib=cef");
@@ -59,8 +60,8 @@ fn main() {
     let bindings = bindgen::Builder::default()
         .header(wrapper_path.to_string_lossy())
         // CRITICAL: Add CEF root to include path so relative includes work
-        .clang_arg(format!("-I{}", cef_root))
-        .clang_arg(format!("-I{}/include", cef_root))
+        .clang_arg(format!("-I{cef_root}"))
+        .clang_arg(format!("-I{cef_root}/include"))
 
         // Allow all CEF functions, types, and constants
         .allowlist_function("cef_.*")

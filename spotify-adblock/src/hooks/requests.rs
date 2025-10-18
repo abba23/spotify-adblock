@@ -133,7 +133,7 @@ hook! {
         }
 
         // Safely extract URL and method strings
-        let url_utf16 = unsafe { from_raw_parts((*url_cef).str_, (*url_cef).length as usize) };
+        let url_utf16 = unsafe { from_raw_parts((*url_cef).str_, (*url_cef).length) };
         let url = String::from_utf16(url_utf16).unwrap_or_else(|_| String::new());
 
         let method_cef = unsafe { (*request).get_method.unwrap()(request) };
@@ -156,7 +156,7 @@ hook! {
 
         // Monitor product state checks (informational)
         if classification.is_product_state {
-            logging::log_debug(&format!("⚠️  PRODUCT STATE CHECK: {} {}", method, url));
+            logging::log_debug(&format!("PRODUCT STATE CHECK: {method} {url}"));
         }
 
         if classification.is_discord_rpc {

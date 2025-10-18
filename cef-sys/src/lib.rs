@@ -2,8 +2,10 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 #![allow(dead_code)]
-#![allow(clippy::too_many_arguments)]
-#![allow(clippy::type_complexity)]
+#![allow(clippy::all)]
+#![allow(missing_debug_implementations)]
+#![allow(unsafe_code)]
+#![allow(missing_docs)]
 
 //! Raw FFI bindings for Chromium Embedded Framework (CEF)
 //!
@@ -38,7 +40,7 @@ pub const CEF_VERSION_MAJOR: u32 = 137;
 ///
 /// # Safety
 /// This function calls into CEF's C API
-pub unsafe fn is_cef_initialized() -> bool {
+pub const unsafe fn is_cef_initialized() -> bool {
     // This would typically call a CEF function to check initialization status
     // For now, this is a placeholder - the actual implementation would depend
     // on CEF's API for checking initialization status

@@ -11,7 +11,7 @@ lazy_static! {
     pub static ref DEBUG_MODE: bool = env::var("SPOTIFY_ADBLOCK_DEBUG").is_ok();
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Debug)]
 pub struct Config {
     #[serde(with = "serde_regex")]
     pub allowlist: RegexSet,
@@ -27,11 +27,13 @@ lazy_static! {
 fn load_config() -> Config {
     let config_paths = vec![
         PathBuf::from("config.toml"),
-        match env::var("XDG_CONFIG_HOME") {
-            Ok(xdg_config_home) => PathBuf::from(xdg_config_home),
-            #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
-            Err(_) => env::home_dir().unwrap_or_default().join(".config")
-        }.join("spotify-adblock/config.toml"),
+        env::var("XDG_CONFIG_HOME").map_or_else(
+            |_| {
+                #[allow(deprecated)] // std::env::home_dir() is only broken on Windows
+                env::home_dir().unwrap_or_default().join(".config")
+            },
+            PathBuf::from
+        ).join("spotify-adblock/config.toml"),
         PathBuf::from("/etc/spotify-adblock/config.toml"),
     ];
 

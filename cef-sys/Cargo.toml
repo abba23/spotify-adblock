@@ -1,11 +1,13 @@
 [package]
 name = "cef-sys"
 version = "0.1.0"
+edition = "2021"
 authors.workspace = true
 description = "Raw FFI bindings for Chromium Embedded Framework (CEF)"
 license.workspace = true
 repository.workspace = true
 rust-version.workspace = true
+readme = "README.md"
 links = "cef"  # Prevents multiple crates from linking to CEF
 keywords = ["cef", "chromium", "browser", "ffi", "bindings"]
 categories = ["external-ffi-bindings", "api-bindings"]
@@ -24,9 +26,16 @@ default = []
 debug = []
 sandbox = []
 
-# Inherit workspace lints
-[lints]
-workspace = true
+# Override workspace lints for auto-generated code
+[lints.rust]
+unsafe_code = "allow"
+missing_debug_implementations = "allow"
+missing_docs = "allow"
+
+[lints.clippy]
+all = "allow"
+pedantic = "allow"
+nursery = "allow"
 
 [package.metadata]
 docs.rs.all-features = true
