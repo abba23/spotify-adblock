@@ -11,19 +11,19 @@ libc = "0.2"
 regex = "1.10"
 serde = { version = "1.0", features = ["derive"] }
 serde_regex = "1.1"
-toml = "0.8"
+toml = "0.9.8"
 
 # Build dependencies
-bindgen = "0.70"
+bindgen = "0.72.1"
 cc = "1.0"
 
 # THIS SECTION WAS MISSING - ADD IT:
 [workspace.package]
 authors = ["coleleavitt"]
-edition = "2021"  # Changed from "2024" to "2021"
+edition = "2024"  # Changed from "2024" to "2021"
 license = "MIT"
 repository = "https://github.com/coleleavitt/spotify-adblock"
-rust-version = "1.75"
+rust-version = "1.85"
 
 # Workspace-wide profiles
 [profile.release]
