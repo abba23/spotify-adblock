@@ -84,10 +84,10 @@ jobs:
       - name: Safety verification
         run: cargo clippy -- -A clippy::not_unsafe_ptr_arg_deref -A clippy::missing_panics_doc -A unused_unsafe -A unsafe_code -D warnings
 
-      - name: Build with cargo-make
+      - name: Build release binary
         env:
           CEF_ROOT: ${{ env.CEF_ROOT }}
-        run: cargo make build
+        run: cargo build --release
 
       - name: Strip binary for size optimization
         run: strip target/release/libspotifyadblock.so
