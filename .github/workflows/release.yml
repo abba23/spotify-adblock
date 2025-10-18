@@ -13,12 +13,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Setup Rust
-        uses: actions-rs/toolchain@v1
+        uses: dtolnay/rust-toolchain@stable
         with:
-          toolchain: stable
-          profile: minimal
           components: clippy
-          override: true
 
       - name: Rust cache
         uses: Swatinem/rust-cache@v2
@@ -26,24 +23,35 @@ jobs:
       - name: Install cargo-make
         uses: davidB/rust-cargo-make@v1
 
+      - name: Cache CEF binary
+        id: cache-cef
+        uses: actions/cache@v4
+        with:
+          path: cef_binary_*.tar.bz2
+          key: cef-137.0.19-g8a1c4ce-chromium-137.0.7151.121-linux64
+
       - name: Download and extract CEF binary
         run: |
           CEF_VERSION="137.0.19+g8a1c4ce+chromium-137.0.7151.121"
           CEF_PACKAGE="cef_binary_${CEF_VERSION}_linux64"
           CEF_URL="https://cef-builds.spotifycdn.com/cef_binary_137.0.19%2Bg8a1c4ce%2Bchromium-137.0.7151.121_linux64.tar.bz2"
 
-          echo "Downloading CEF binary..."
-          curl -L -f -o "${CEF_PACKAGE}.tar.bz2" "${CEF_URL}" || {
-            echo "Failed to download CEF. Trying to fetch available versions..."
-            curl -s "https://cef-builds.spotifycdn.com/index.json" | grep -o '"cef_version":"[^"]*137[^"]*"' | head -5
-            exit 1
-          }
+          if [ ! -f "${CEF_PACKAGE}.tar.bz2" ]; then
+            echo "Downloading CEF binary..."
+            curl -L -f -o "${CEF_PACKAGE}.tar.bz2" "${CEF_URL}" || {
+              echo "Failed to download CEF. Trying to fetch available versions..."
+              curl -s "https://cef-builds.spotifycdn.com/index.json" | grep -o '"cef_version":"[^"]*137[^"]*"' | head -5
+              exit 1
+            }
+          else
+            echo "Using cached CEF binary"
+          fi
 
           echo "Extracting CEF binary..."
           tar -xjf "${CEF_PACKAGE}.tar.bz2"
 
           echo "CEF_ROOT=$PWD/${CEF_PACKAGE}" >> $GITHUB_ENV
-          echo "CEF downloaded and extracted to: $PWD/${CEF_PACKAGE}"
+          echo "CEF extracted to: $PWD/${CEF_PACKAGE}"
 
       - name: Safety verification
         run: cargo clippy -- -A clippy::not_unsafe_ptr_arg_deref -A clippy::missing_panics_doc -A unused_unsafe -A unsafe_code -D warnings
@@ -65,21 +73,16 @@ jobs:
           sha256sum libspotifyadblock.so > spotify-adblock.sha256
 
       - name: Attach binary to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_name: spotify-adblock.so
-          asset_path: target/release/libspotifyadblock.so
-          asset_content_type: application/octet-stream
+          files: |
+            target/release/libspotifyadblock.so
+            target/release/spotify-adblock.sha256
 
-      - name: Attach checksum to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload to release assets
+        uses: actions/upload-artifact@v4
         with:
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_name: spotify-adblock.sha256
-          asset_path: target/release/spotify-adblock.sha256
-          asset_content_type: text/plain
+          name: spotify-adblock-release
+          path: |
+            target/release/libspotifyadblock.so
+            target/release/spotify-adblock.sha256
