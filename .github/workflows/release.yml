@@ -32,9 +32,13 @@ jobs:
             libcairo2-dev \
             libgtk-3-dev \
             libglib2.0-dev \
-            libgobject-2.0-dev \
             libatk1.0-dev \
-            libgio2.0-cil-dev
+            libgdk-pixbuf2.0-dev \
+            libnss3-dev \
+            libnspr4-dev \
+            libasound2-dev \
+            libcups2-dev \
+            libdbus-1-dev
 
       - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
