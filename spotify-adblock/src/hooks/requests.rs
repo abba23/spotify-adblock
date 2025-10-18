@@ -1,4 +1,4 @@
-use crate::cef::{_cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_urlrequest_t};
+use cef_sys::{_cef_request_context_t, _cef_request_t, _cef_urlrequest_client_t, cef_urlrequest_t};
 use crate::config::{CONFIG, DEBUG_MODE};
 use lazy_static::lazy_static;
 use std::{ptr::null, slice::from_raw_parts, string::String};
@@ -16,6 +16,7 @@ struct UrlClassification {
     is_gabo: bool,
     is_dealer: bool,
     is_ad_related: bool,
+    is_product_state: bool,
 }
 
 /// Fault-contained URL classifier with bounded execution
@@ -35,28 +36,79 @@ fn classify_url(url: &str) -> UrlClassification {
             url.contains("connect-state") ||
             url.contains("rpc"),
 
-        is_gabo: url.contains("gabo-receiver-service"),
+        // Gabo service - ONLY allow non-ad events
+        is_gabo: url.contains("gabo-receiver-service") &&
+                 !url.contains("/advertisement") &&
+                 !url.contains("/ad-opportunity") &&
+                 !url.contains("/adlogic") &&
+                 !url.contains("/ads"),
 
         is_dealer: url.contains("dealer"),
 
-        // Enhanced ad detection criteria including WhatsApp and all potential ad-related endpoints
-        is_ad_related: url.contains("/ads/") ||
+        // Product state monitoring (for premium checks)
+        is_product_state: url.contains("product_state") || url.contains("product-state"),
+
+        // COMPREHENSIVE ad detection criteria
+        is_ad_related:
+            // Core ad endpoints
+            url.contains("/ads/") ||
             url.contains("ad-logic") ||
+            url.contains("adlogic") ||
+
+            // CRITICAL: Track classification marker
+            url.contains("injected-ad") ||
+
+            // Third-party ad networks
             url.contains("doubleclick") ||
             url.contains("googleads") ||
             url.contains("adswizz") ||
+
+            // Analytics and tracking
             url.contains("analytics") ||
-            // TODO: Add more ad-related domains to actually block the *Powered By WhatsAPP issue on Today's Top Hits (Still a WIP)*
+            (url.contains("clientsettings") && url.contains("api")) ||
+            (url.contains("track") && url.contains("event")) ||
+
+            // Sponsored/Promoted content endpoints
             url.contains("sponsor") ||
+            url.contains("/promotion/") ||
+            url.contains("spotify:promotion:") ||
+            url.contains("/partner/") ||
+            url.contains("spotify:partner:") ||
             url.contains("partnership") ||
+            url.contains("promoted") ||
+
+            // Display ads and companion content
+            url.contains("companion-ad") ||
+            url.contains("companion_content") ||
+            url.contains("companion-content") ||
+            url.contains("canvas_ad") ||
+            url.contains("canvas-ad") ||
+            url.contains("/figs/") ||
+
+            // Skip limit enforcement
+            url.contains("RemainingSkipsRequest") ||
+            url.contains("RemainingSkipsResponse") ||
+            url.contains("skip-limit") ||
+            url.contains("skip_limit") ||
+
+            // Display segments (sponsored playlist banners)
+            url.contains("display-segments") ||
+            url.contains("display_segments") ||
+            url.contains("DisplaySegments") ||
+
+            // Gabo ad events (but not all gabo)
+            (url.contains("gabo-receiver-service") && (
+                url.contains("/advertisement") ||
+                url.contains("/ad-opportunity") ||
+                url.contains("/adlogic") ||
+                url.contains("/ads")
+            )) ||
+
+            // Misc ad-related
             url.contains("brand") ||
             url.contains("whatsapp") ||
             url.contains("hpto") ||
-            url.contains("promoted") ||
-            url.contains("takeover") ||
-            (url.contains("clientsettings") && url.contains("api")) ||
-            (url.contains("track") && url.contains("event")) ||
-            (url.contains("ads") && !url.contains("gabo"))
+            url.contains("takeover")
     }
 }
 
@@ -101,6 +153,12 @@ hook! {
         }
 
         // Decision logic with proper cleanup in all paths
+
+        // Monitor product state checks (informational)
+        if classification.is_product_state {
+            logging::log_debug(&format!("⚠️  PRODUCT STATE CHECK: {} {}", method, url));
+        }
+
         if classification.is_discord_rpc {
             logging::log_allowed("DISCORD RPC", &method, &url);
             let result = REAL_CEF_URLREQUEST_CREATE(request, client, request_context);
