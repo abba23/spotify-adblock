@@ -12,6 +12,9 @@ links = "cef"  # Prevents multiple crates from linking to CEF
 keywords = ["cef", "chromium", "browser", "ffi", "bindings"]
 categories = ["external-ffi-bindings", "api-bindings"]
 
+[lib]
+doctest = false  # Disable doctests for auto-generated FFI bindings
+
 [build-dependencies]
 bindgen.workspace = true
 cc.workspace = true
