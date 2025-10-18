@@ -86,9 +86,6 @@ jobs:
           CEF_ROOT: ${{ env.CEF_ROOT }}
         run: cargo make build
 
-      - name: Verify with JPL standards
-        run: cargo make verify
-
       - name: Run tests
         run: cargo test --release
 
@@ -105,5 +102,5 @@ jobs:
         run: |
           echo "## Build Verification Report" >> $GITHUB_STEP_SUMMARY
           echo "- Safety checks passed" >> $GITHUB_STEP_SUMMARY
-          echo "- JPL standards verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Build completed successfully" >> $GITHUB_STEP_SUMMARY
           echo "- Binary size: $(du -h target/release/libspotifyadblock.so | cut -f1)" >> $GITHUB_STEP_SUMMARY

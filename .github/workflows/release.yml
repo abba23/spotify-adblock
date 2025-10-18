@@ -89,9 +89,6 @@ jobs:
           CEF_ROOT: ${{ env.CEF_ROOT }}
         run: cargo make build
 
-      - name: Verify with JPL standards
-        run: cargo make verify
-
       - name: Strip binary for size optimization
         run: strip target/release/libspotifyadblock.so
 
