@@ -80,8 +80,8 @@ fn main() {
         // Generate comments for documentation
         .generate_comments(true)
 
-        // Use std::ffi consistently
-        .ctypes_prefix("std::ffi")
+        // REMOVED: .ctypes_prefix() - use bindgen's default ctypes behavior
+        // This will use std::os::raw::c_int, etc. instead of std::ffi::c_int
 
         // Handle size_t and other types properly
         .size_t_is_usize(true)
@@ -166,5 +166,32 @@ fn create_wrapper_header() -> String {
 #include "include/capi/cef_string_visitor_capi.h"
 #include "include/capi/cef_zip_reader_capi.h"
 #include "include/capi/cef_xml_reader_capi.h"
+#include "include/capi/cef_accessibility_handler_capi.h"
+#include "include/capi/cef_audio_handler_capi.h"
+#include "include/capi/cef_auth_callback_capi.h"
+#include "include/capi/cef_command_handler_capi.h"
+#include "include/capi/cef_devtools_message_observer_capi.h"
+#include "include/capi/cef_download_item_capi.h"
+#include "include/capi/cef_drag_data_capi.h"
+#include "include/capi/cef_i18n_util_capi.h"
+#include "include/capi/cef_media_router_capi.h"
+#include "include/capi/cef_menu_model_delegate_capi.h"
+#include "include/capi/cef_navigation_entry_capi.h"
+#include "include/capi/cef_origin_whitelist_capi.h"
+#include "include/capi/cef_parser_capi.h"
+#include "include/capi/cef_preference_capi.h"
+#include "include/capi/cef_print_settings_capi.h"
+#include "include/capi/cef_registration_capi.h"
+#include "include/capi/cef_resource_bundle_capi.h"
+#include "include/capi/cef_resource_bundle_handler_capi.h"
+#include "include/capi/cef_server_capi.h"
+#include "include/capi/cef_shared_memory_region_capi.h"
+#include "include/capi/cef_shared_process_message_builder_capi.h"
+#include "include/capi/cef_ssl_info_capi.h"
+#include "include/capi/cef_ssl_status_capi.h"
+#include "include/capi/cef_task_manager_capi.h"
+#include "include/capi/cef_unresponsive_process_callback_capi.h"
+#include "include/capi/cef_x509_certificate_capi.h"
+#include "include/capi/cef_crash_util_capi.h"
 "#.to_string()
 }
