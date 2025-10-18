@@ -27,9 +27,14 @@ jobs:
         run: |
           CEF_VERSION="137.0.19+g8a1c4ce+chromium-137.0.7151.121"
           CEF_PACKAGE="cef_binary_${CEF_VERSION}_linux64"
+          CEF_URL="https://cef-builds.spotifycdn.com/cef_binary_137.0.19%2Bg8a1c4ce%2Bchromium-137.0.7151.121_linux64.tar.bz2"
 
           echo "Downloading CEF binary..."
-          wget -q "https://cef-builds.spotifycdn.com/${CEF_PACKAGE}.tar.bz2"
+          curl -L -f -o "${CEF_PACKAGE}.tar.bz2" "${CEF_URL}" || {
+            echo "Failed to download CEF. Trying to fetch available versions..."
+            curl -s "https://cef-builds.spotifycdn.com/index.json" | grep -o '"cef_version":"[^"]*137[^"]*"' | head -5
+            exit 1
+          }
 
           echo "Extracting CEF binary..."
           tar -xjf "${CEF_PACKAGE}.tar.bz2"
