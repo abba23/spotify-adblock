@@ -23,10 +23,26 @@ jobs:
       - name: Install cargo-make
         uses: davidB/rust-cargo-make@v1
 
+      - name: Download and extract CEF binary
+        run: |
+          CEF_VERSION="137.0.19+g8a1c4ce+chromium-137.0.7151.121"
+          CEF_PACKAGE="cef_binary_${CEF_VERSION}_linux64"
+
+          echo "Downloading CEF binary..."
+          wget -q "https://cef-builds.spotifycdn.com/${CEF_PACKAGE}.tar.bz2"
+
+          echo "Extracting CEF binary..."
+          tar -xjf "${CEF_PACKAGE}.tar.bz2"
+
+          echo "CEF_ROOT=$PWD/${CEF_PACKAGE}" >> $GITHUB_ENV
+          echo "CEF downloaded and extracted to: $PWD/${CEF_PACKAGE}"
+
       - name: Run clippy (safety checks)
         run: cargo clippy -- -A clippy::not_unsafe_ptr_arg_deref -A clippy::missing_panics_doc -A unused_unsafe -A unsafe_code -D warnings
 
       - name: Build with cargo-make
+        env:
+          CEF_ROOT: ${{ env.CEF_ROOT }}
         run: cargo make build
 
       - name: Verify with JPL standards
@@ -47,6 +63,6 @@ jobs:
       - name: Verification report
         run: |
           echo "## Build Verification Report" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Safety checks passed" >> $GITHUB_STEP_SUMMARY
-          echo "✅ JPL standards verified" >> $GITHUB_STEP_SUMMARY
-          echo "✅ Binary size: $(du -h target/release/libspotifyadblock.so | cut -f1)" >> $GITHUB_STEP_SUMMARY
+          echo "- Safety checks passed" >> $GITHUB_STEP_SUMMARY
+          echo "- JPL standards verified" >> $GITHUB_STEP_SUMMARY
+          echo "- Binary size: $(du -h target/release/libspotifyadblock.so | cut -f1)" >> $GITHUB_STEP_SUMMARY

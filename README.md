@@ -22,17 +22,41 @@ Prerequisites:
 * Make or cargo-make
 * Rust 1.75+ (supports 2024 edition)
 * [Cargo](https://doc.rust-lang.org/cargo/)
+* CEF (Chromium Embedded Framework) binary - automatically downloaded in CI/CD
 
+### Download CEF Binary (Local Development)
 ```bash
-# Using traditional Make
-$ git clone https://github.com/coleleavitt/spotify-adblock.git
-$ cd spotify-adblock
-$ make
+# Download CEF binary for your platform from Spotify's CDN
+wget https://cef-builds.spotifycdn.com/cef_binary_137.0.19+g8a1c4ce+chromium-137.0.7151.121_linux64.tar.bz2
+tar -xjf cef_binary_137.0.19+g8a1c4ce+chromium-137.0.7151.121_linux64.tar.bz2
+```
 
-# Using cargo-make (install with: cargo install cargo-make)
+### Build Options
+
+**Using debug_run.sh (Recommended for Development):**
+```bash
 $ git clone https://github.com/coleleavitt/spotify-adblock.git
 $ cd spotify-adblock
+# Download CEF binary first (see above)
+$ ./debug_run.sh
+```
+
+**Using traditional Make:**
+```bash
+$ export CEF_ROOT="$PWD/cef_binary_137.0.19+g8a1c4ce+chromium-137.0.7151.121_linux64"
+$ make
+```
+
+**Using cargo-make (install with: cargo install cargo-make):**
+```bash
+# cargo-make will auto-detect CEF in project directory
 $ cargo make build
+```
+
+**Manual build with cargo:**
+```bash
+$ export CEF_ROOT="$PWD/cef_binary_137.0.19+g8a1c4ce+chromium-137.0.7151.121_linux64"
+$ cargo build --release --lib
 ```
 
 ## Install
