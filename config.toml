@@ -77,12 +77,40 @@ allowlist = [
     '.*discord.*', # Allow Discord domains
     '.*presence.*', # Allow presence-related endpoints
     '.*-dealer\.g2\.spotify\.com', # Allow dealer endpoints for websockets
-    'spclient\.wg\.spotify\.com/gabo-receiver-service/.*'
-
+    # REMOVED: gabo-receiver-service - now handled in code with selective blocking
 ]
 
 denylist = [
-    #'https://spclient\.wg\.spotify\.com/ads/.*', # ads
-    #'https://spclient\.wg\.spotify\.com/ad-logic/.*', # ads
-   # 'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*/events(?!.*discord.*)',
+    # Core ad endpoints
+    'https://spclient\.wg\.spotify\.com/ads/.*',
+    'https://spclient\.wg\.spotify\.com/ad-logic/.*',
+    'https://spclient\.wg\.spotify\.com/adlogic/.*',
+
+    # CRITICAL: Gabo ad delivery (selective blocking)
+    'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*/advertisement',
+    'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*/ad-opportunity',
+    'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*/adlogic',
+
+    # Skip limit enforcement
+    'https://spclient\.wg\.spotify\.com/.*/RemainingSkipsRequest',
+    'https://spclient\.wg\.spotify\.com/.*/RemainingSkipsResponse',
+    'https://spclient\.wg\.spotify\.com/.*/skip-limit',
+
+    # Promoted/Sponsored content
+    'https://spclient\.wg\.spotify\.com/.*/promotion/.*',
+    'https://spclient\.wg\.spotify\.com/.*/partner/.*',
+    'https://api-partner\.spotify\.com/promotion/.*',
+
+    # Display segments (sponsored playlist banners, "presented by" banners)
+    'https://spclient\.wg\.spotify\.com/display-segments/.*',
+    'https://spclient\.wg\.spotify\.com/.*/DisplaySegments.*',
+
+    # Companion content / Canvas ads
+    'https://spclient\.wg\.spotify\.com/.*/companion-content/.*',
+    'https://spclient\.wg\.spotify\.com/.*/canvas-ad/.*',
+
+    # Analytics and tracking
+    '.*doubleclick\.net/.*',
+    '.*googleads\..*',
+    '.*adswizz\..*',
 ]
