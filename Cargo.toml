@@ -15,7 +15,7 @@ toml = "*"
 
 [lib]
 name = "spotifyadblock"
-crate_type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 lto = true
