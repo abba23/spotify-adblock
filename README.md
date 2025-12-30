@@ -45,46 +45,10 @@ $ flatpak run --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_P
 ### Desktop file
 You can integrate it with your desktop environment by creating a `.desktop` file (e.g. `spotify-adblock.desktop`) in `~/.local/share/applications`. This lets you easily run it from an application launcher without opening a terminal.
 
-Examples:
-
-<details> 
-  <summary>Debian Package</summary>
-  <p>
-
+```bash
+$ cp spotify-adblock-deb.desktop ~/.local/share/applications
+$ cp spotify-adblock-flatpack.desktop ~/.local/share/applications
 ```
-[Desktop Entry]
-Type=Application
-Name=Spotify (adblock)
-GenericName=Music Player
-Icon=spotify-client
-TryExec=spotify
-Exec=env LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify %U
-Terminal=false
-MimeType=x-scheme-handler/spotify;
-Categories=Audio;Music;Player;AudioVideo;
-StartupWMClass=spotify
-```
-  </p>
-</details>
-
-<details>
-  <summary>Flatpak</summary>
-  <p>
-
-```
-[Desktop Entry]
-Type=Application
-Name=Spotify (adblock)
-GenericName=Music Player
-Icon=com.spotify.Client
-Exec=flatpak run --file-forwarding --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"' @@u %U @@
-Terminal=false
-MimeType=x-scheme-handler/spotify;
-Categories=Audio;Music;Player;AudioVideo;
-StartupWMClass=spotify
-```
-  </p>
-</details>
 
 ## Uninstall
 ```bash
