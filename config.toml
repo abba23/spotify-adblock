@@ -48,7 +48,7 @@ allowlist = [
     'xpui\.app\.spotify\.com', # user interface
     'apresolve\.spotify\.com', # access point resolving
     'clienttoken\.spotify\.com', # login
-    '.*dealer.?\.spotify\.com', # websocket connections
+    '.*dealer.*\.spotify\.com', # websocket connections
     'image-upload.*\.spotify\.com', # image uploading
     'login.*\.spotify\.com', # login
     '.*-spclient\.spotify\.com', # client APIs
