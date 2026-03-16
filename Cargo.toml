@@ -5,6 +5,15 @@ authors = ["abba23"]
 description = "Adblocker for Spotify"
 edition = "2021"
 
+[package.metadata.deb]
+depends = "spotify-client"
+enhances = "spotify-client"
+assets = [
+    ["target/release/libspotifyadblock.so", "usr/local/lib/spotify-adblock.so", "644"],
+    ["config.toml", "/etc/spotify-adblock/config.toml", "644"],
+    ["spotify-adblock-deb.desktop", "usr/local/share/applications/spotify-adblock-deb.desktop", "644"],
+]
+
 [dependencies]
 lazy_static = "*"
 libc = "*"
