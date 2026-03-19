@@ -24,22 +24,23 @@ $ make
 $ sudo make install
 ```
 
-#### Flatpak
+#### Install (Flatpak)
 ```bash
-$ mkdir -p ~/.spotify-adblock && cp target/release/libspotifyadblock.so ~/.spotify-adblock/spotify-adblock.so
-$ mkdir -p ~/.var/app/com.spotify.Client/config/spotify-adblock && cp config.toml ~/.var/app/com.spotify.Client/config/spotify-adblock
-$ flatpak override --user --filesystem="~/.spotify-adblock/spotify-adblock.so" --filesystem="~/.config/spotify-adblock/config.toml" com.spotify.Client
+$ mkdir -p ~/.var/app/com.spotify.Client/config/spotify-adblock
+$ cp target/release/libspotifyadblock.so ~/.var/app/com.spotify.Client
+$ cp config.toml ~/.var/app/com.spotify.Client/config/spotify-adblock
+$ flatpak --user override "--env=LD_PRELOAD=$HOME/.var/app/com.spotify.Client/libspotifyadblock.so" com.spotify.Client
 ```
 
 ## Usage
+
+### Flatpak
+
+No extra configuration needed, just launch the app.
+
 ### Command-line
 ```bash
 $ LD_PRELOAD=/usr/local/lib/spotify-adblock.so spotify
-```
-
-#### Flatpak
-```bash
-$ flatpak run --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"'
 ```
 
 ### Desktop file
@@ -51,7 +52,7 @@ Examples:
   <summary>Debian Package</summary>
   <p>
 
-```
+```ini
 [Desktop Entry]
 Type=Application
 Name=Spotify (adblock)
@@ -67,34 +68,15 @@ StartupWMClass=spotify
   </p>
 </details>
 
-<details>
-  <summary>Flatpak</summary>
-  <p>
-
-```
-[Desktop Entry]
-Type=Application
-Name=Spotify (adblock)
-GenericName=Music Player
-Icon=com.spotify.Client
-Exec=flatpak run --file-forwarding --command=sh com.spotify.Client -c 'eval "$(sed s#LD_PRELOAD=#LD_PRELOAD=$HOME/.spotify-adblock/spotify-adblock.so:#g /app/bin/spotify)"' @@u %U @@
-Terminal=false
-MimeType=x-scheme-handler/spotify;
-Categories=Audio;Music;Player;AudioVideo;
-StartupWMClass=spotify
-```
-  </p>
-</details>
-
 ## Uninstall
 ```bash
 $ sudo make uninstall
 ```
 
-#### Flatpak
+#### Uninstall (Flatpak)
 ```bash
-$ rm -r ~/.spotify-adblock ~/.config/spotify-adblock
-$ flatpak override --user --reset com.spotify.Client
+$ flatpak --user override --unset-env=LD_PRELOAD com.spotify.Client
+$ rm -rv ~/.var/app/com.spotify.Client/{config/spotify-adblock,libspotifyadblock.so}
 ```
 
 ## Configuration
@@ -102,4 +84,5 @@ The allowlist and denylist can be configured in a config file located at (in des
 * `config.toml` in the working directory
 * `$XDG_CONFIG_HOME/spotify-adblock/config.toml`
 * `~/.config/spotify-adblock/config.toml`
+* `~/.var/app/com.spotify.Client/config/spotify-adblock/config.toml` *(Flatpak)*
 * `/etc/spotify-adblock/config.toml` *(default)*
