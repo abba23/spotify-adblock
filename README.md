@@ -1,5 +1,5 @@
 # spotify-adblock
-Spotify adblocker for Linux (macOS untested) that works by wrapping `getaddrinfo` and `cef_urlrequest_create`. It blocks requests to domains that are not on the allowlist, as well as URLs that are on the denylist.
+Spotify adblocker for Linux that works by wrapping `getaddrinfo` and `cef_urlrequest_create`. It blocks requests to domains that are not on the allowlist, as well as URLs that are on the denylist.
 
 ### Notes
 * This **does not** work with the snap Spotify package.
@@ -10,8 +10,7 @@ Spotify adblocker for Linux (macOS untested) that works by wrapping `getaddrinfo
 Prerequisites:
 * Git
 * Make
-* Rust
-* [Cargo](https://doc.rust-lang.org/cargo/)
+* [Rust and Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html)
 
 ```bash
 $ git clone https://github.com/abba23/spotify-adblock.git
@@ -98,8 +97,5 @@ $ flatpak override --user --reset com.spotify.Client
 ```
 
 ## Configuration
-The allowlist and denylist can be configured in a config file located at (in descending order of precedence):
-* `config.toml` in the working directory
-* `$XDG_CONFIG_HOME/spotify-adblock/config.toml`
-* `~/.config/spotify-adblock/config.toml`
-* `/etc/spotify-adblock/config.toml` *(default)*
+The allowlist and denylist are configured in a config file located at `/etc/spotify-adblock/config.toml`.
+It can be overriden with a user-specific version at `$XDG_CONFIG_HOME/spotify-adblock/config.toml` or `$HOME/.config/spotify-adblock/config.toml`.

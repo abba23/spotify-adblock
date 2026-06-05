@@ -1,21 +1,23 @@
 [package]
 name = "spotify-adblock"
-version = "1.0.2"
+version = "1.1.0"
 authors = ["abba23"]
 description = "Adblocker for Spotify"
-edition = "2021"
+edition = "2024"
 
 [dependencies]
-lazy_static = "*"
 libc = "*"
 regex = "*"
 serde = { version = "*", features = ["derive"] }
 serde_regex = "*"
+log = "*"
+env_logger = "*"
 toml = "*"
+dirs = "*"
 
 [lib]
 name = "spotifyadblock"
-crate_type = ["cdylib"]
+crate-type = ["cdylib"]
 
 [profile.release]
 lto = true
