@@ -8,17 +8,16 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v6
     - name: Run make
       run: make
     - name: Attach build artifact to release
-      uses: actions/upload-release-asset@v1
+      run: |
+        mv target/release/libspotifyadblock.so spotify-adblock.so
+        gh release upload --clobber "${{ github.event.release.tag_name }}" spotify-adblock.so
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ github.event.release.upload_url }}
-        asset_name: spotify-adblock.so
-        asset_path: target/release/libspotifyadblock.so
-        asset_content_type: application/octet-stream
