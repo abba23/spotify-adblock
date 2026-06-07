@@ -3,23 +3,28 @@ name = "spotify-adblock"
 version = "1.1.0"
 authors = ["abba23"]
 description = "Adblocker for Spotify"
+license = "GPL-3"
+repository = "https://github.com/abba23/spotify-adblock"
+readme = "README.md"
 edition = "2024"
 
 [dependencies]
+dirs = "*"
+env_logger = "*"
 libc = "*"
+log = "*"
 regex = "*"
 serde = { version = "*", features = ["derive"] }
 serde_regex = "*"
-log = "*"
-env_logger = "*"
 toml = "*"
-dirs = "*"
 
 [lib]
 name = "spotifyadblock"
 crate-type = ["cdylib"]
 
 [profile.release]
+codegen-units = 1
 lto = true
-opt-level = 3
+opt-level = "s"
 panic = "abort"
+strip = true

@@ -1,14 +1,10 @@
 #[used]
 #[unsafe(link_section = ".init_array")]
-static INIT: unsafe extern "C" fn() = init;
-
-unsafe extern "C" fn init() {
-    let env_config = env_logger::Env::default().default_filter_or("info");
+static INIT: fn() = || {
+    let env_config = env_logger::Env::default().default_filter_or(log::Level::Info.to_string());
     let mut logger = env_logger::Builder::from_env(env_config);
-    if let Err(error) = logger.try_init() {
-        panic!("Failed to initialize logger: {error}.");
-    }
-}
+    logger.init();
+};
 
 #[macro_export]
 macro_rules! log_green {
