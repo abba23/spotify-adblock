@@ -51,7 +51,7 @@ allowlist = [
     '.*dealer.*\.spotify\.com', # websocket connections
     'image-upload.*\.spotify\.com', # image uploading
     'login.*\.spotify\.com', # login
-    '.*-spclient\.spotify\.com', # client APIs
+    '.*-spclient\.spotify\.com', # client APIs, ads (blocked in blacklist)
     'spclient\.wg\.spotify\.com', # client APIs, ads/tracking (blocked in blacklist)
     'audio-fa\.spotifycdn\.com', # audio
     'mixed-media-images\.spotifycdn\.com', # mix images
@@ -77,6 +77,8 @@ allowlist = [
 ]
 
 denylist = [
+    'https://.*-spclient\.spotify\.com/ads/.*', # ads
+    'https://.*-spclient\.spotify\.com/ad-logic/.*', # ads
     'https://spclient\.wg\.spotify\.com/ads/.*', # ads
     'https://spclient\.wg\.spotify\.com/ad-logic/.*', # ads
     'https://spclient\.wg\.spotify\.com/gabo-receiver-service/.*', # tracking
