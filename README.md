@@ -1,5 +1,5 @@
 # spotify-adblock
-Spotify adblocker for Linux that works by wrapping `cef_urlrequest_create` and blocking requests to domains on a denylist.
+Spotify adblocker for Linux that works by wrapping `cef_urlrequest_create` and blocking requests to URLs on a denylist.
 
 ### Notes
 * This **does not** work with the snap Spotify package.
