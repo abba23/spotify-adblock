@@ -6,33 +6,16 @@ mod log;
 use crate::cef::{_cef_request_t, _cef_string_utf16_t};
 use crate::config::CONFIG;
 
-use libc::{EAI_FAIL, addrinfo, c_char};
-use std::{
-    ffi::{CStr, c_void},
-    ptr, slice,
-};
-
-hook! {
-    getaddrinfo(node: *const c_char, service: *const c_char, hints: *const addrinfo, res: *const *const addrinfo) -> i32 => real_getaddrinfo {
-        let domain = unsafe { CStr::from_ptr(node) }.to_str().unwrap();
-        if CONFIG.allowlist.is_match(domain) {
-            log_green!("[+] getaddrinfo: {domain}");
-            real_getaddrinfo(node, service, hints, res)
-        } else {
-            log_red!("[-] getaddrinfo: {domain}");
-            EAI_FAIL
-        }
-    }
-}
+use std::{ffi::c_void, ptr, slice};
 
 hook! {
     cef_urlrequest_create(request: *mut _cef_request_t, client: *const c_void, request_context: *const c_void) -> *const c_void => real_cef_urlrequest_create {
         let url = extract_url(request);
         if CONFIG.denylist.is_match(&url) {
-            log_red!("[-] cef_urlrequest_create: {url}");
+            log_red!("[-] {url}");
             ptr::null()
         } else {
-            log_green!("[+] cef_urlrequest_create: {url}");
+            log_green!("[+] {url}");
             real_cef_urlrequest_create(request, client, request_context)
         }
     }

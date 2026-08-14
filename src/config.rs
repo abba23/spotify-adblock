@@ -8,8 +8,6 @@ pub static CONFIG: LazyLock<Config> = LazyLock::new(load_config);
 #[derive(Deserialize)]
 pub struct Config {
     #[serde(with = "serde_regex")]
-    pub allowlist: RegexSet,
-    #[serde(with = "serde_regex")]
     pub denylist: RegexSet,
 }
 
