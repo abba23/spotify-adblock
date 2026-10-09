@@ -1,7 +1,8 @@
 NAME = spotify-adblock
 PREFIX = /usr/local
 PROFILE ?= release
-BINARY_SOURCE = target/$(PROFILE)/libspotifyadblock.so
+TARGET_DIR ?= target
+BINARY_SOURCE = $(TARGET_DIR)/$(PROFILE)/libspotifyadblock.so
 BINARY_TARGET = $(DESTDIR)$(PREFIX)/lib/$(NAME).so
 CONFIG_SOURCE = config.toml
 CONFIG_TARGET = $(DESTDIR)/etc/$(NAME)/config.toml
@@ -9,12 +10,12 @@ CONFIG_TARGET = $(DESTDIR)/etc/$(NAME)/config.toml
 .PHONY: all
 all: $(BINARY_SOURCE)
 
-$(BINARY_SOURCE): src Cargo.toml
-	cargo build --profile $(PROFILE)
+$(BINARY_SOURCE): $(wildcard src/*.rs) Cargo.toml
+	cargo build --profile $(PROFILE) --target-dir $(TARGET_DIR)
 
 .PHONY: clean
 clean:
-	rm -rf target
+	rm -rf $(TARGET_DIR)
 
 .PHONY: install
 install: $(BINARY_SOURCE) $(CONFIG_SOURCE)
