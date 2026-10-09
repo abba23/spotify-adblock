@@ -15,8 +15,13 @@ const RELATIVE_CONFIG_DIR: &str = "spotify-adblock";
 const CONFIG_NAME: &str = "config.toml";
 const GLOBAL_CONFIG_DIR: &str = "/etc";
 
+const DEFAULT_CONFIG: &str = include_str!("../config.toml");
+
 fn load_config() -> Config {
-    let config_path = find_config().expect("Failed to find config.");
+    let Some(config_path) = find_config() else {
+        info!("No config found, using default config.");
+        return toml::from_str(DEFAULT_CONFIG).expect("Failed to parse default config.");
+    };
     info!("Found config: {}.", config_path.display());
 
     let config_string = fs::read_to_string(&config_path)
